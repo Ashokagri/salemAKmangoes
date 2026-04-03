@@ -74,11 +74,11 @@ function Products() {
                 ))}
               </div>
             </div>
+            <br />
           </Container>
           <br />
           <br />
-          <br />
-          <br />
+
           <Container>
             <div className="products-view-container">
               {products && products.length > 0 ? (
