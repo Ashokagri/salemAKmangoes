@@ -1,5 +1,7 @@
 import { Mail, MapPin, Phone } from 'lucide-react';
 import React from 'react'
+import './FooterTop.css'
+
 
 const ContactItemData = [
     {
@@ -10,7 +12,7 @@ const ContactItemData = [
     },
     {
         title: 'Call Us',
-        subtitle: '+91 63856 72895',
+        subtitle: '+91 81480 96385',
         icon: <Phone className="h-6 w-6" />
     },
     {
@@ -29,7 +31,7 @@ const FooterTop = () => {
                         {item.icon}
                     </div>
                     <div>
-                        <h3 className='font-bold text-white text-lg mb-1 drop-shadow-sm'>
+                        <h3 className='font-bold footer-top-title text-lg mb-1 drop-shadow-sm'>
                             {item.title}
                         </h3>
                         <p className='text-white font-medium text-sm leading-relaxed opacity-90 transition-opacity group-hover:opacity-100'>
