@@ -35,7 +35,5 @@ app.get("*", (_, res) => {
 });
 
 app.use(errorHandleMiddleware);
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  dotenv.config({ path: "backend/config/config.env" });
-}
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 export default app;

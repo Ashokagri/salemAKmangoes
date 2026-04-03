@@ -25,6 +25,10 @@ const orderSchema=new mongoose.Schema({
         phoneNo:{
             type:Number,
             required:true
+        },
+        shippingPartner:{
+            type:String,
+            required:true
         }
     },
     orderItems:[

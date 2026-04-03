@@ -20,73 +20,86 @@ function Products() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const keyword = searchParams.get("keyword");
-  const category = searchParams.get("category");
+  const urlCategory = searchParams.get("category"); // Renamed to avoid shadowing
   const pageFromURL = parseInt(searchParams.get("page"), 10) || 1;
-  const [currentPage, setCurrentPage] = useState(pageFromURL);
   const navigate = useNavigate();
   const categories = ["Mangoes", "Others"];
 
   useEffect(() => {
-    dispatch(getProduct({ keyword, page: currentPage, category }));
-  }, [dispatch, keyword, currentPage, category]);
+    dispatch(getProduct({ keyword, page: pageFromURL, category: urlCategory }));
+  }, [dispatch, keyword, pageFromURL, urlCategory]);
+
   useEffect(() => {
     if (error) {
-      toast.error(error.message, { position: "bottom-center", autoClose: 3000 });
+      toast.error(error.message || "Error loading products", { position: "bottom-center", autoClose: 3000 });
       dispatch(removeErrors());
     }
   }, [dispatch, error]);
 
 
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = (cat) => {
     const newSearchParams = new URLSearchParams(location.search);
-    newSearchParams.set("category", category);
+    if (urlCategory === cat) {
+      newSearchParams.delete("category");
+    } else {
+      newSearchParams.set("category", cat);
+    }
     newSearchParams.delete("page");
     navigate(`?${newSearchParams.toString()}`);
   };
+
+  const handlePageChange = (page) => {
+    const newSearchParams = new URLSearchParams(location.search);
+    newSearchParams.set("page", page);
+    navigate(`?${newSearchParams.toString()}`);
+  };
+
   return (
     <>
+      <Navbar />
       {loading ? (
         <Loader />
       ) : (
-        <>
-          <Navbar />
-<Container>
-          <div className="filter-section">
-            <ul className="flex items-center gap-7">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => handleCategoryClick(category)}
-                 className={`btn-category ${category === category ? "active" : ""}`}>
-                  {category}
-                </button>
-              ))}
-            </ul>
-          </div>
-          </Container>
-          <div>
-            {products.length > 0 ? (
-              
-                <div className="home-container">
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <main className="pt-24 lg:pt-28 min-h-screen">
+          <Container>
+            <div className="filter-section my-8">
+              <div className="flex items-center justify-center gap-4 flex-wrap">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategoryClick(cat)}
+                    className={`btn-category ${urlCategory === cat ? "active" : ""}`}>
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="products-view-container">
+              {products && products.length > 0 ? (
+                <div className="home-container pb-12">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     {products.map((product, index) => (
-                      <Product product={product} key={index} />
+                      <Product product={product} key={product._id || index} />
                     ))}
                   </div>
+                  
+                  <div className="mt-12 flex justify-center">
+                    <Pagination 
+                      currentPage={pageFromURL} 
+                      onPageChange={handlePageChange} 
+                    />
+                  </div>
                 </div>
-              
-            ) : (
-              <>
-              <br/><br/>
-              <NoProducts />
-              </>
-            )}
-
-           
-          </div>
-
+              ) : (
+                <div className="py-20">
+                  <NoProducts />
+                </div>
+              )}
+            </div>
+          </Container>
           <Footer />
-        </>
+        </main>
       )}
     </>
   );

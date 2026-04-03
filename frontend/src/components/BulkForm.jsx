@@ -32,38 +32,53 @@ const onSubmit = async (event) => {
 
 
   return (
-    <form className="bulk-form" onSubmit={onSubmit}>
-      <h2>Bulk Order Form</h2>
-      <input type="hidden" name="subject" value="New Bulk Order Request" />
-      <label>Name</label>
-      <input type="text" name="name" placeholder="Full Name" required />
-      <label id="bulk-section">Email</label>
-      <input type="email" name="email" placeholder="Email Address" required />
-      <label>Mobile.no</label>
-      <input type="text" name="mobile" placeholder="Mobile Number" required />
-      <label>Address</label>
-      <textarea name="address" placeholder="Full Address" required />
-      <label>Quantity in kg</label>
-      <input
-        type="number"
-        name="quantity"
-        placeholder="Quantity in kg"
-        value={quantity}
-        kg
-        onChange={(e) => setQuantity(e.target.value)}
-        required
-        min="1"
-      />
-      <button type="submit" disabled={quantity <= 20}>
-        Submit
-      </button>
+    <div className="bulk-form-container">
+      <form className="bulk-form" onSubmit={onSubmit}>
+        <h2 className="bulk-form-title">Bulk Order Form</h2>
+        <input type="hidden" name="subject" value="New Bulk Order Request" />
+        
+        <div className="form-group">
+          <label>Full Name</label>
+          <input type="text" name="name" placeholder="Enter your full name" required />
+        </div>
 
+        <div className="form-group" id="bulk-section">
+          <label>Email Address</label>
+          <input type="email" name="email" placeholder="Enter your email" required />
+        </div>
 
-      {quantity <= 20 && quantity !== "" && (
-        <p className="warning-text">Minimum 21 kg required for bulk booking</p>
-      )}
+        <div className="form-group">
+          <label>Mobile Number</label>
+          <input type="text" name="mobile" placeholder="Enter your phone number" required />
+        </div>
 
-      <p className="result">{result}</p>
-    </form>
+        <div className="form-group">
+          <label>Delivery Address</label>
+          <textarea name="address" placeholder="Full delivery address" required />
+        </div>
+
+        <div className="form-group">
+          <label>Quantity (in kg)</label>
+          <input
+            type="number"
+            name="quantity"
+            placeholder="Min 21 kg"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            required
+            min="1"
+          />
+          {quantity <= 20 && quantity !== "" && (
+            <p className="warning-text">Minimum 21 kg required for bulk booking</p>
+          )}
+        </div>
+
+        <button type="submit" className="bulk-submit-btn" disabled={quantity <= 20}>
+          Submit Request
+        </button>
+
+        {result && <p className={`result ${result.includes("Error") ? "error" : "success"}`}>{result}</p>}
+      </form>
+    </div>
   );
 }

@@ -1,9 +1,11 @@
 import app from "./app.js";
 import dotenv from "dotenv";
 import { connectMongoDatabase } from "./config/db.js";
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  dotenv.config({ path: "backend/config/config.env" });
-}
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 import { v2 as cloudinary } from "cloudinary";
 import Razorpay from "razorpay";
 connectMongoDatabase();
@@ -14,7 +16,9 @@ cloudinary.config({
 });
 // Handle uncaught exception errors
 process.on("uncaughtException", (err) => {
- 
+  console.log(`Error: ${err.message}`);
+  console.log(`Shutting down the server due to Uncaught Exception`);
+  console.error(err);
   process.exit(1);
 });
 
@@ -27,6 +31,9 @@ export const instance = new Razorpay({
 const server = app.listen(port);
 
 process.on("unhandledRejection", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log(`Shutting down the server due to Unhandled Promise Rejection`);
+  console.error(err);
   server.close(() => {
     process.exit(1);
   });

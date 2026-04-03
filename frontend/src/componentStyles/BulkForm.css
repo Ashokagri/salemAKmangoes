@@ -1,103 +1,141 @@
-/* BulkForm.css */
+.bulk-form-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
 .bulk-form {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 650px;
+  background: white;
+  padding: 3rem;
+  border-radius: 2rem;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-soft);
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  font-family: Arial, sans-serif;
+  gap: 1.75rem;
+  transition: transform var(--transition-main), box-shadow var(--transition-main);
+  text-align: left; /* Force left alignment for inside elements */
 }
 
-.bulk-form h2 {
+.bulk-form:hover {
+  box-shadow: var(--shadow-2xl);
+}
+
+.bulk-form-title {
   text-align: center;
-  font-size: 22px;
-  margin-bottom: 10px;
-  color: #333;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--dark-green);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 }
 
-.bulk-form input,
-.bulk-form textarea {
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-main);
+  padding-left: 0.25rem;
+}
+
+.form-group input,
+.form-group textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
+  padding: 1rem 1.25rem;
+  background: var(--bg-main);
+  border: 1px solid var(--border-main);
+  border-radius: 1rem;
+  font-size: 1rem;
+  color: var(--text-main);
+  transition: all var(--transition-fast);
   outline: none;
-  transition: border 0.3s ease;
 }
 
-.bulk-form input:focus,
-.bulk-form textarea:focus {
-  border-color: #4CAF50;
+.form-group input:focus,
+.form-group textarea:focus {
+  background: white;
+  border-color: var(--mango-green);
+  box-shadow: 0 0 0 4px var(--mango-green-soft);
 }
 
-.bulk-form textarea {
-  min-height: 90px;
+.form-group textarea {
+  min-height: 120px;
   resize: vertical;
 }
 
-.bulk-form button {
-  padding: 12px;
-  background: #99cc33;
-  color: black;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  
+.warning-text {
+  font-size: 0.8125rem;
+  color: #ef4444;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  padding-left: 0.25rem;
 }
 
-.bulk-form button:hover{
-    background: #063c28;
-    color: black;
-}
-
-.bulk-form button:disabled {
-  background: #99cc33;
-  cursor: not-allowed;
-}
-
-.bulk-form button:not(:disabled):hover {
-  background: #063c28;
+.bulk-submit-btn {
+  width: 100%;
+  padding: 1.125rem;
+  background: var(--dark-green);
   color: white;
+  border: none;
+  border-radius: 1rem;
+  font-size: 1.125rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all var(--transition-main);
+  box-shadow: var(--shadow-md);
+  margin-top: 0.5rem;
+}
+
+.bulk-submit-btn:hover:not(:disabled) {
+  background: var(--mango-green);
+  color: var(--dark-green);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.bulk-submit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--text-muted);
 }
 
 .result {
   text-align: center;
-  font-size: 16px;
-  margin-top: 5px;
+  font-weight: 700;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.9375rem;
 }
 
-.warning-text {
-  color: #d9534f;
-  text-align: center;
-  font-size: 14px;
+.result.success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 480px) {
+.result.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .bulk-form {
-    margin: 20px;
-    padding: 15px;
+    padding: 2rem 1.5rem;
+    border-radius: 1.5rem;
+    margin: 0 1rem;
   }
-
-  .bulk-form h2 {
-    font-size: 20px;
-  }
-
-  .bulk-form input,
-  .bulk-form textarea {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .bulk-form button {
-    font-size: 15px;
-    padding: 10px;
+  
+  .bulk-form-title {
+    font-size: 1.5rem;
   }
 }

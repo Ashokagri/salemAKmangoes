@@ -1,59 +1,46 @@
-import { Clock, Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import React from 'react'
-
-
-
-
 
 const ContactItemData = [
     {
         title: 'Visit Our Store',
-        subtitle: 'salem AK mangoes, Airport Road, Kamalapuram, Salem - 636309',
-        subtitle2: 'Tamilnadu, India',
-        icon: (
-            <MapPin className="h-6 w-6 text-white group-hover:text-primary transition-colors"/>
-        )
+        subtitle: 'Airport Road, Kamalapuram, Salem - 636309',
+        subtitle2: 'Tamil Nadu, India',
+        icon: <MapPin className="h-6 w-6" />
     },
-    
     {
-        title: 'Call us',
+        title: 'Call Us',
         subtitle: '+91 63856 72895',
-        icon: (
-            <Phone className="h-6 w-6 text-white group-hover:text-primary transition-colors"/>
-        )
+        icon: <Phone className="h-6 w-6" />
     },
-  
     {
-        title: 'Email us',
+        title: 'Email Us',
         subtitle: 'salem.ak.mango@gmail.com',
-        icon: (
-            <Mail className="h-6 w-6 text-white group-hover:text-primary transition-colors"/>
-        )
+        icon: <Mail className="h-6 w-6" />
     },
 ];
+
 const FooterTop = () => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 bg-[#5A3E1B]">
-      {ContactItemData.map((item) => (
-        <div key={item.title} className='flex items-center-safe justify-center gap-3 group p-4 transition-colors'>
-            {item.icon}
-            <div>
-                <h3 className='font-semibold text-[#ffcc33] group-hover:text-[#99cc33]'>
-                    {item.title}
-                </h3>
-            <p className='text-[#99cc33] text-sm mt-1 group-hover:text-[#ffcc33]'>
-                {item.subtitle}
-               
-            </p>
-             <p className='text-[#99cc33] text-sm mt-1 group-hover:text-[#ffcc33]'>
-               
-                {item.subtitle2}
-            </p>
-            </div>
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-8 bg-transparent border-b border-white/10">
+            {ContactItemData.map((item) => (
+                <div key={item.title} className='flex items-start gap-4 group p-4 transition-all duration-300 hover:bg-white/5 rounded-2xl'>
+                    <div className="p-3 bg-white/10 rounded-xl text-[#ffcc33] group-hover:bg-[#99cc33] group-hover:text-[#1a3c34] transition-all">
+                        {item.icon}
+                    </div>
+                    <div>
+                        <h3 className='font-bold text-white text-lg mb-1 drop-shadow-sm'>
+                            {item.title}
+                        </h3>
+                        <p className='text-white font-medium text-sm leading-relaxed opacity-90 transition-opacity group-hover:opacity-100'>
+                            {item.subtitle}
+                            {item.subtitle2 && <><br />{item.subtitle2}</>}
+                        </p>
+                    </div>
+                </div>
+            ))}
         </div>
-      ))}
-    </div>
-  );
+    );
 };
 
-export default FooterTop
+export default FooterTop;

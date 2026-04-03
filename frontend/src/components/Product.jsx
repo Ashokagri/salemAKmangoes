@@ -1,35 +1,53 @@
-import React, { useState } from "react";
+import React from "react";
 import "../componentStyles/Product.css";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
-import { ShoppingBag } from "@mui/icons-material";
+import { ArrowRight, Leaf } from "lucide-react";
 
 function Product({ product }) {
-  const [rating, setRating] = useState(0);
-  const handleRatingChange = (newRating) => {
-    setRating(rating);
-  };
   return (
- <Link to={`/product/${product._id}`}className="product_id">
-   <div className="product-card">
-    <img src={product.image[0].url} alt={product.name} className='product-image-card'/>
-    <div className="product-details">
-        <h3 className="product-title">{product.name}</h3>
-        <p className="home-price"><strong>Price</strong> {product.price}/-</p>
-        <div className="rating_container">
-            <Rating
-            value={product.ratings}
-            onRatingChange={handleRatingChange}
-            disabled={true}
-            />
+    <Link to={`/product/${product?._id}`} className="product_id group">
+      <div className="product-card">
+        {/* Organic Badge */}
+        <div className="product-badge flex items-center gap-1">
+          <Leaf size={12} /> Organic
         </div>
-        <span className="productCardSpan">
-           ( {product.numOfReviews} {product.numOfReviews===1?"Review":"Reviews"} )
-        </span>
-        <button className="add-to-cart">View Details</button>
-    </div>
-   </div>
-   </Link>
+
+        <div className="product-image-wrapper">
+          <img 
+            src={product?.image?.[0]?.url ? product.image[0].url : "/images/placeholder.png"} 
+            alt={product?.name || "Product Image"} 
+            className="product-image-card" 
+          />
+        </div>
+
+        <div className="product-details">
+          <h3 className="product-title">{product?.name || "Premium Mango"}</h3>
+          
+          <div className="price-row">
+            <span className="home-price">₹{product?.price || 0}</span>
+            <span className="price-unit">/ kg</span>
+          </div>
+
+          <div className="rating-row">
+            <Rating
+              value={product?.ratings || 0}
+              disabled={true}
+              size="small"
+            />
+            {product?.numOfReviews > 0 && (
+              <span className="productCardSpan">
+                ({product.numOfReviews})
+              </span>
+            )}
+          </div>
+
+          <button className="view-details-btn group-hover:bg-[#1a3c34] group-hover:text-white transition-all">
+            View Details <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </button>
+        </div>
+      </div>
+    </Link>
   );
 }
 

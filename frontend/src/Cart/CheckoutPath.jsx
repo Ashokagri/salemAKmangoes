@@ -1,35 +1,40 @@
-import React from 'react';
-import '../CartStyles/CheckoutPath.css'
-import { AccountBalance, LibraryAddCheck, LocalShipping } from '@mui/icons-material';
+import React from "react";
+import "../CartStyles/CheckoutPath.css";
+import { Truck, ClipboardList, Wallet, Check } from "lucide-react";
 
-function CheckoutPath({activePath}) {
-    const path=[
-        {
-            label:'Shipping Details',
-            icon:<LocalShipping/>
-        },
-        {
-            label:'Order Summary',
-            icon:<LibraryAddCheck/>
-        },
-        {
-            label:'Payment',
-            icon:<AccountBalance/>
-        }
-    ]
+function CheckoutPath({ activePath }) {
+  const steps = [
+    {
+      label: "Shipping Details",
+      icon: <Truck size={24} />,
+    },
+    {
+      label: "Order Summary",
+      icon: <ClipboardList size={24} />,
+    },
+    {
+      label: "Payment",
+      icon: <Wallet size={24} />,
+    },
+  ];
+
   return (
-    <div className="checkoutPath">
-       {path.map((item,index)=>(
-        <div className="checkoutPath-step" key={index}
-        active={activePath===index?'true':'false'}
-        completed={activePath>=index?'true':'false'}
+    <nav className="checkoutPath" aria-label="Checkout Progress">
+      {steps.map((item, index) => (
+        <div
+          className="checkoutPath-step"
+          key={index}
+          data-active={activePath === index ? "true" : "false"}
+          data-completed={activePath > index ? "true" : "false"}
         >
-            <p className="checkoutPath-icon">{item.icon}</p>
-            <p className="checkoutPath-label">{item.label}</p>
+          <div className="checkoutPath-icon-container">
+             {activePath > index ? <Check size={20} strokeWidth={3} /> : item.icon}
+          </div>
+          <p className="checkoutPath-label">{item.label}</p>
         </div>
-       )) }
-    </div>
-  )
+      ))}
+    </nav>
+  );
 }
 
-export default CheckoutPath
+export default CheckoutPath;

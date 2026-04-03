@@ -1,132 +1,117 @@
-import React, { useEffect } from 'react';
-import '../AdminStyles/Dashboard.css'
+import React, { useEffect } from "react";
+import "../AdminStyles/Dashboard.css";
 import {
-    AddBox,
-    AttachMoney,
-    CheckCircle,
-    Dashboard as DashboardIcon,
-    Error,
-    Instagram,
-    Inventory,
-    LinkedIn,
-    People,
-    ShoppingCart,
-    Star,
-    YouTube
-} from '@mui/icons-material'
-import Navbar from '../components/Navbar';
-import PageTitle from '../components/PageTitle';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAdminProducts, fetchAllOrders } from '../features/admin/adminSlice';
+  Box,
+  ShoppingBag,
+  Star,
+  IndianRupee,
+  AlertCircle,
+  CheckCircle2
+} from "lucide-react";
+import Navbar from "../components/Navbar";
+import PageTitle from "../components/PageTitle";
+import Footer from "../components/Footer";
+import AdminSidebar from "./AdminSidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAdminProducts, fetchAllOrders } from "../features/admin/adminSlice";
 
 function Dashboard() {
-    const {products,orders,totalAmount}=useSelector(state=>state.admin);
-    const dispatch=useDispatch();
-    useEffect(()=>{
-        dispatch(fetchAdminProducts())
-        dispatch(fetchAllOrders())
-    },[dispatch])
-    const totalProducts=products.length;
-    const totalOrders=orders.length;
-    const outOfStock=products.filter(product=>product.stock===0).length;
-    const inStock=products.filter(product=>product.stock>0).length;
-    const totalReviews=products.reduce((acc,product)=>acc+(product.reviews.length ||0),0)
+  const { products, orders, totalAmount } = useSelector((state) => state.admin);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAdminProducts());
+    dispatch(fetchAllOrders());
+  }, [dispatch]);
+
+  const totalProducts = products.length;
+  const totalOrders = orders.length;
+  const outOfStock = products.filter((product) => product.stock === 0).length;
+  const inStock = products.filter((product) => product.stock > 0).length;
+  const totalReviews = products.reduce((acc, product) => acc + (product.reviews.length || 0), 0);
+
   return (
-   <>
-   <Navbar/>
-   <PageTitle title="Admin Dashboard"/>
-    <div className="dashboard-container">
-        <div className="sidebar">
-            <div className="logo">
-                <DashboardIcon  className="logo-icon"/>
-                Admin Dashboard
-            </div>
-            <nav className="nav-menu">
-                <div className="nav-section">
-                    <h3>Products</h3>
-                    <Link to="/admin/products">
-                    <Inventory className='nav-icon'/>
-                    All Products
-                    </Link>
-                    <Link to="/admin/product/create">
-                    <AddBox className='nav-icon'/>
-                    Create Product
-                    </Link>
-                </div>
+    <>
+      <Navbar />
+      <br />
+      <br />
+      <PageTitle title="Admin Dashboard - Salem AK Mangoes" />
 
-                <div className="nav-section">
-                    <h3>Users</h3>
-                    <Link to="/admin/users">
-                    <People className='nav-icon'/>
-                    All Users
-                    </Link>
-                
-                </div>
+      <div className="dashboard-layout">
+        <AdminSidebar />
 
-                <div className="nav-section">
-                    <h3>Orders</h3>
-                    <Link to="/admin/orders">
-                    <ShoppingCart className='nav-icon'/>
-                    All Orders
-                    </Link>
-                
-                </div>
+        <main className="admin-main-content">
+          <header className="admin-page-header">
+            <h1 className="admin-page-title">Dashboard Overview</h1>
+            <p className="admin-page-subtitle">Real-time statistics for your mango business.</p>
+          </header>
 
-                <div className="nav-section">
-                    <h3>Reviews</h3>
-                    <Link to="/admin/reviews">
-                    <Star className='nav-icon'/>
-                    All Reviews
-                    </Link>
-                
-                </div>
-            </nav>
-        </div>
-
-        <div className="main-content">
-          <div className="stats-grid">
-            <div className="stat-box">
-                <Inventory className='icon'/>
-                <h3>Total Products</h3>
-                <p>{totalProducts}</p>
+          <div className="admin-stats-grid">
+            <div className="admin-stat-card">
+              <div className="stat-icon-box">
+                <IndianRupee size={24} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-label">Total Revenue</span>
+                <span className="stat-value">₹{totalAmount.toLocaleString()}</span>
+              </div>
             </div>
 
-            <div className="stat-box">
-                <ShoppingCart className='icon'/>
-                <h3>Total Orders</h3>
-                <p>{totalOrders}</p>
+            <div className="admin-stat-card">
+              <div className="stat-icon-box">
+                <ShoppingBag size={24} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-label">Total Orders</span>
+                <span className="stat-value">{totalOrders}</span>
+              </div>
             </div>
 
-            <div className="stat-box">
-                <Star className='icon'/>
-                <h3>Total Reviews</h3>
-                <p>{totalReviews}</p>
+            <div className="admin-stat-card">
+              <div className="stat-icon-box">
+                <Box size={24} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-label">Total Products</span>
+                <span className="stat-value">{totalProducts}</span>
+              </div>
             </div>
 
-            <div className="stat-box">
-                <AttachMoney className='icon'/>
-                <h3>Total Revenue</h3>
-                <p>{totalAmount}/-</p>
+            <div className="admin-stat-card">
+              <div className="stat-icon-box" style={{ color: "#ef4444" }}>
+                <AlertCircle size={24} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-label">Out of Stock</span>
+                <span className="stat-value">{outOfStock}</span>
+              </div>
             </div>
 
-            <div className="stat-box">
-                <Error className='icon'/>
-                <h3>Out Of Stock</h3>
-                <p>{outOfStock}</p>
+            <div className="admin-stat-card">
+              <div className="stat-icon-box" style={{ color: "#22c55e" }}>
+                <CheckCircle2 size={24} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-label">In Stock</span>
+                <span className="stat-value">{inStock}</span>
+              </div>
             </div>
 
-            <div className="stat-box">
-                <CheckCircle className='icon'/>
-                <h3>In Stock</h3>
-                <p>{inStock}</p>
+            <div className="admin-stat-card">
+              <div className="stat-icon-box" style={{ color: "#f59e0b" }}>
+                <Star size={24} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-label">Total Reviews</span>
+                <span className="stat-value">{totalReviews}</span>
+              </div>
             </div>
           </div>
-
-        </div>
-    </div>
-   </>
-  )
+        </main>
+      </div>
+      <Footer />
+    </>
+  );
 }
 
-export default Dashboard
+export default Dashboard;

@@ -7,30 +7,21 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckoutPath from "./CheckoutPath";
 import { useNavigate } from "react-router-dom";
 import { refreshCartPrices } from "../features/cart/cartSlice";
+import { User, Truck, MapPin, Phone, ShoppingCart, CreditCard, ArrowRight } from "lucide-react";
 
 function OrderConfirm() {
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
-const subtotal = cartItems.reduce(
-  (acc, item) => acc + item.price * item.quantity,
-  0
-);
 
-// Calculate total quantity
-const totalQty = cartItems.reduce(
-  (acc, item) => acc + item.quantity,
-  0
-);
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
-// Shipping charge per kg/item
-const shippingPerKg = totalQty >= 7 ? 25 : 35;
-
-// Final shipping = per kg * total quantity
-const shippingCharges = shippingPerKg * totalQty;
-
-// Final total
-const total = subtotal + shippingCharges; // here tax and shipping to assign
+  const shippingCharges = shippingInfo.shippingCharges || 0;
+  const total = subtotal + shippingCharges;
   const navigate = useNavigate();
+
   const proceedToPayment = () => {
     const data = {
       subtotal,
@@ -40,97 +31,119 @@ const total = subtotal + shippingCharges; // here tax and shipping to assign
     sessionStorage.setItem("orderItem", JSON.stringify(data));
     navigate("/process/payment");
   };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(refreshCartPrices());
-  }, []);
+  }, [dispatch]);
 
   return (
-    <section className="bg-white">
-      <PageTitle title="salemAKmangoes" />
+    <>
       <Navbar />
-      <CheckoutPath activePath={1} />
-      <div className="confirm-container">
-        <h1 className="confirm-header">Order Summary</h1>
-        <div className="confirm-table-container">
-          <table className="confirm-table">
-            <caption>Shipping Details</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Address</th>
-              </tr>
-            </thead>
-            <tbody className="bodyadd">
-              <tr>
-                {/* The data-label attribute is used by CSS to show the label on mobile */}
-                <td data-label="Name">{user.name}</td>
-                <td data-label="Phone">{shippingInfo.phoneNumber}</td>
-                <td data-label="Address">
-                  {shippingInfo.address}, {shippingInfo.city},{" "}
-                  {shippingInfo.state}, {shippingInfo.country}-
-                  {shippingInfo.pinCode}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <br />
+      <br />
+      <div className="pt-24 lg:pt-32 pb-12">
+        <PageTitle title="Order Confirmation - Salem AK Mangoes" />
+        <CheckoutPath activePath={1} />
 
-          <table className="confirm-table cart-table">
-            <caption>Cart Items</caption>
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.map((item) => (
-                <tr key={item.product}>
-                  <td>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="order-product-image"
-                    />
-                  </td>
-                  <td>{item.name} </td>
-                  <td>₹ {item.price}/-</td>
-                  <td>{item.quantity} </td>
-                  <td>₹ {item.quantity * item.price}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="confirm-container">
+          <h1 className="confirm-header">Final Order Review</h1>
 
-          <table className="confirm-table">
-            <caption>Order Summary</caption>
-            <thead>
-              <tr>
-                <th>Subtotal</th>
-                <th>Shipping Charges</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>₹ {subtotal}/-</td>
-                <td>₹ {shippingCharges}/-</td>
-                <td>₹ {total}/-</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="confirm-layout">
+            <div className="confirm-main">
+              {/* Shipping Information Card */}
+              <div className="confirm-card">
+                <h2 className="confirm-card-title">
+                  <Truck size={20} /> Shipping Details
+                </h2>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="info-label">Customer Name</span>
+                    <span className="info-value">{user.name}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Phone Number</span>
+                    <span className="info-value">{shippingInfo.phoneNumber}</span>
+                  </div>
+                  <div className="info-item" style={{ gridColumn: "1 / -1" }}>
+                    <span className="info-label">Delivery Address</span>
+                    <span className="info-value">
+                      {shippingInfo.address}, {shippingInfo.city}, {shippingInfo.state}, India - {shippingInfo.pinCode}
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Courier Partner</span>
+                    <span className="info-value text-[#99cc33] flex items-center gap-1">
+                      <Truck size={14} /> {shippingInfo.shippingPartner || "N/A"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Order Items Card */}
+              <div className="confirm-card">
+                <h2 className="confirm-card-title">
+                  <ShoppingCart size={20} /> Your Selection
+                </h2>
+                <div className="confirm-items-list">
+                  {cartItems.map((item) => (
+                    <div className="confirm-item-row" key={item.product}>
+                      <img src={item.image} alt={item.name} className="confirm-item-img" />
+                      <div className="confirm-item-details">
+                        <p className="confirm-item-name">{item.name}</p>
+                        <p className="confirm-item-meta">{item.quantity} kg × ₹{item.price.toLocaleString()}/kg</p>
+                      </div>
+                      <div className="confirm-item-price">
+                        ₹{(item.quantity * item.price).toLocaleString()}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Price Summary Sticky Sidebar */}
+            <aside className="order-total-card">
+              <div className="confirm-card">
+                <h2 className="confirm-card-title">
+                  <CreditCard size={20} /> Order Summary
+                </h2>
+
+                <div className="summary-row">
+                  <span className="summary-label">Items Subtotal</span>
+                  <span className="summary-value">₹{subtotal.toLocaleString()}</span>
+                </div>
+
+                <div className="summary-row">
+                  <span className="summary-label">Shipping Charges</span>
+                  <span className="summary-value">₹{shippingCharges.toLocaleString()}</span>
+                </div>
+
+                <div className="summary-divider"></div>
+
+                <div className="final-total-row">
+                  <span className="final-total-label">Grand Total</span>
+                  <div className="flex flex-col items-end">
+                    <span className="final-total-value">₹{total.toLocaleString()}</span>
+                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Included GST & Taxes</span>
+                  </div>
+                </div>
+
+                <button className="proceed-button group" onClick={proceedToPayment}>
+                  Make Secure Payment <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
+                </button>
+                <br />
+                <p className="text-center text-[10px] text-gray-400 mt-6 px-4 leading-relaxed uppercase tracking-widest">
+                  Secure checkout powered by Razorpay. <br /> Naturally grown Salem AK Mangoes.
+                </p>
+              </div>
+            </aside>
+          </div>
         </div>
-        <button className="proceed-button" onClick={proceedToPayment}>
-          Proceed to Payment
-        </button>
       </div>
       <Footer />
-    </section>
+    </>
   );
 }
 

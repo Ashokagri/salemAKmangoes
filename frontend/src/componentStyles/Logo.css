@@ -1,36 +1,56 @@
-
-
-
 .logo-wrapper {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  white-space: nowrap;
+  gap: 0.25rem;
+  transition: transform var(--transition-fast);
 }
 
+.logo-wrapper:hover {
+  transform: scale(1.02);
+}
 
 .logo-title {
-  font-size: clamp(1rem, 2vw, 2rem);
-  font-weight: 900;
+  font-size: 1.25rem;
+  font-weight: 800;
   text-transform: uppercase;
-  font-family: sans-serif;
-  letter-spacing: 2px;
-  color: #ffcc33; 
-  transition: color 0.3s ease;
+  letter-spacing: -0.02em;
+  color: var(--dark-green);
+  display: flex;
+  align-items: center;
 }
-
 
 .logo-ak {
-  font-size: clamp(1.8rem, 4.8vw, 2.7rem);
-  color: #99cc33; 
-  transition: color 0.3s ease;
+  color: var(--mango-yellow);
+  margin: 0 2px;
+  position: relative;
+  font-size: 1.5rem;
+  line-height: 1;
 }
 
-
-.logo-title:hover {
-  color: #99cc33;
+/* Optional: Add a small mango-leaf-like accent or underline */
+.logo-ak::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--mango-green);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform var(--transition-main);
 }
 
-.logo-title:hover .logo-ak {
-  color: #ffcc33;
+.logo-wrapper:hover .logo-ak::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 640px) {
+  .logo-title {
+    font-size: 1.1rem;
+  }
+  .logo-ak {
+    font-size: 1.3rem;
+  }
 }

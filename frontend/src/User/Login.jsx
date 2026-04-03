@@ -1,62 +1,97 @@
 import React, { useEffect, useState } from 'react';
-import '../UserStyles/Form.css'
+import '../UserStyles/Form.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, removeErrors, removeSuccess } from '../features/user/userSlice';
 import { toast } from 'react-toastify';
+import { Mail, Lock, LogIn } from 'lucide-react';
 
 function Login() {
-    const [loginEmail,setLoginEmail]=useState("");
-    const [loginPassword,setLoginPassword]=useState("");
-    const {error,loading,success,isAuthenticated}=useSelector(state=>state.user);
-    const dispatch=useDispatch();
-    const navigate=useNavigate();
-    const location=useLocation();
-    const redirect=  new URLSearchParams(location.search).get("redirect")||"/"
-    const loginSubmit=(e)=>{
-        e.preventDefault();
-        dispatch(login({email:loginEmail,password:loginPassword}))
-    }
-       useEffect(()=>{
-            if(error){
-              toast.error(error,{position:'bottom-left',autoClose:2000});
-              dispatch(removeErrors())
-            }
-          },[dispatch,error])
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const { error, loading, success, isAuthenticated } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const redirect = new URLSearchParams(location.search).get("redirect") || "/";
 
-   useEffect(()=>{
-    if(isAuthenticated){
-        navigate(redirect)
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login({ email: loginEmail, password: loginPassword }));
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, { position: 'bottom-left', autoClose: 2000 });
+      dispatch(removeErrors());
     }
-   },[isAuthenticated])
-   useEffect(()=>{
-    if(success){
-        toast.success('Login Successful',{position:'bottom-left',autoClose:2000})
-        dispatch(removeSuccess())
+  }, [dispatch, error]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirect);
     }
-   },[dispatch,success])
+  }, [isAuthenticated, navigate, redirect]);
+
+  useEffect(() => {
+    if (success) {
+      toast.success('Login Successful', { position: 'bottom-left', autoClose: 2000 });
+      dispatch(removeSuccess());
+    }
+  }, [dispatch, success]);
+
   return (
-    <>
-    <h1 className='flex justify-center items-center font-bold'>Log in</h1>
-   <div className="form-container container">
-    
-    <div className="form-content">
-    
-        <form className='form' onSubmit={loginSubmit}>
-            <div className="input-group">
-                <input type="email"  placeholder='Email' value={loginEmail} onChange={(e)=>setLoginEmail(e.target.value)}/>
+    <div className="form-container">
+      <div className="form-content">
+        <div className="form-header">
+          <h1>Welcome Back</h1>
+          <p>Login to access your account</p>
+        </div>
+        <form className="form" onSubmit={loginSubmit}>
+          <div className="input-field-group">
+            <label>Email Address</label>
+            <div className="input-wrapper">
+              <Mail size={18} />
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                required 
+                value={loginEmail} 
+                onChange={(e) => setLoginEmail(e.target.value)} 
+              />
             </div>
-            <div className="input-group">
-                <input type="password"  placeholder='Password' value={loginPassword}onChange={(e)=>setLoginPassword(e.target.value)}/>
+          </div>
+          
+          <div className="input-field-group">
+            <label>Password</label>
+            <div className="input-wrapper">
+              <Lock size={18} />
+              <input 
+                type="password" 
+                placeholder="Enter your password" 
+                required 
+                value={loginPassword} 
+                onChange={(e) => setLoginPassword(e.target.value)} 
+              />
             </div>
-            <button className="authBtn">Sign In</button>
-            <p className="form-links">Forgot your password? <Link to="/password/forgot">Reset Here</Link></p>
-            <p className="form-links">Don't have an account? <Link to="/register">Sign up here</Link></p>
+          </div>
+
+          <button className="authBtn" type="submit" disabled={loading}>
+            {loading ? <div className="btn-loader"></div> : <><LogIn size={18} /> Sign In</>}
+          </button>
+
+          <div className="form-links-container">
+            <p className="form-link-item">
+              Forgot your password? <Link to="/password/forgot">Reset Here</Link>
+            </p>
+            <p className="form-link-item">
+              Don't have an account? <Link to="/register">Sign up here</Link>
+            </p>
+          </div>
         </form>
+      </div>
     </div>
-   </div>
-   </>
-  )
+  );
 }
 
-export default Login
+export default Login;

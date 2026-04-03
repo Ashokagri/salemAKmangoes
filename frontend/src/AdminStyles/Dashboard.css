@@ -1,202 +1,181 @@
-.dashboard-container {
-    display: flex;
-   
-    overflow-y: auto;
-    padding: 0;
-    
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-main);
+}
+
+/* Sidebar Modernization */
+.admin-sidebar {
+  width: 280px;
+  background: var(--dark-green);
+  color: white;
+  padding: 2rem 1rem;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo-icon {
+  color: var(--mango-green);
+}
+
+.sidebar-title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.nav-section-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all var(--transition-fast);
+}
+
+.nav-link:hover, .nav-link.active {
+  background: rgba(153, 204, 51, 0.15);
+  color: var(--mango-green);
+}
+
+/* Main Content Area */
+.admin-main-content {
+  flex: 1;
+  padding: 3rem;
+  max-width: 1400px;
+}
+
+.admin-page-header {
+  margin-bottom: 3rem;
+}
+
+.admin-page-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--dark-green);
+  letter-spacing: -0.02em;
+}
+
+.admin-page-subtitle {
+  color: var(--text-soft);
+  font-size: 1rem;
+}
+
+/* Stats Grid */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.admin-stat-card {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all var(--transition-main);
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--mango-green);
+}
+
+.stat-icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-main);
+  color: var(--dark-green);
+  flex-shrink: 0;
+}
+
+.admin-stat-card:hover .stat-icon-box {
+  background: var(--mango-green-soft);
+  color: var(--dark-green);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--dark-green);
+  line-height: 1.2;
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    display: none; /* In a real app, I'd implement a mobile toggle, but keeping it simple for now or using the Navbar user menu */
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-main-content {
+    padding: 1.5rem;
   }
   
-  .sidebar {
-    width: 270px;
-    background-color: #fcf0e4;
-    color: #063d29;
-    padding: 20px;
-    padding-bottom:50px;
-    position: fixed;
-    top: 60px; 
-    height: calc(100vh - 5px); 
-    overflow-y: auto; 
-    border-right: 1px solid black;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .admin-page-title {
     font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
-  
-  .logo-icon {
-    font-size: 24px;
-  }
-  
-  .nav-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .nav-section {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .admin-link{
-    margin-bottom:0;
-  }
-  .nav-section h3 {
-    color: #063d29;
-    font-size: 0.85rem;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .nav-section a {
-    color: #151515;
-    text-decoration: none;
-    padding: 12px 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.95rem;
-  }
-  
-  .nav-icon {
-    font-size: 20px;
-  }
-  
-  .nav-section a:hover {
-    background-color: rgba(255,255,255,0.1);
-    transform: translateX(5px);
-      }
-  
-  .main-content {
-    flex: 1;
-    padding: 30px;
-    margin-left: 280px;
-    margin-top: 60px;
-  }
-  
-  .page-title {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 30px;
-    font-weight: 600;
-  }
-  
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
-  }
-  
-  .stat-box {
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(4, 4, 4, 0.05);
-    transition: transform 0.3s ease;
-    border: 0.5px solid black;
-  }
-  
-  .stat-box:hover {
-    transform: translateY(-5px);
-  }
-  
-  .stat-box .icon {
-    color: #5A3E1B;
-    margin-bottom: 15px;
-    font-size: 32px;
-  }
-  
-  .stat-box h3 {
-    margin: 10px 0;
-    color: #666;
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-  
-  .stat-box p {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #333;
-    margin-top: 5px;
-  }
-  
-  .social-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-  }
-  
-  .social-box {
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease;
-  }
-  
-  .social-box:hover {
-    transform: translateY(-5px);
-  }
-  
-  .social-box .MuiSvgIcon-root {
-    font-size: 36px;
-    margin-bottom: 15px;
-  }
-  
-  .social-box.instagram .MuiSvgIcon-root {
-    color: #E1306C;
-  }
-  
-  .social-box.linkedin .MuiSvgIcon-root {
-    color: #0077B5;
-  }
-  
-  .social-box.youtube .MuiSvgIcon-root {
-    color: #FF0000;
-  }
-  
-  .social-box h3 {
-    margin: 15px 0;
-    color: #333;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-  
-  .social-box p {
-    color: #666;
-    margin: 8px 0;
-    font-size: 1rem;
-  }
-  
-  @media (max-width: 768px) {
-    .sidebar {
-      width: auto;
-      height: auto;
-      position: relative;
-    }
-  
-  
-    .main-content {
-      margin-left: 0;
-    }
-  
-    .stats-grid {
-      grid-template-columns: 1fr;
-    }
-  
-    .social-stats {
-      grid-template-columns: 1fr;
-    }
-  }
+}

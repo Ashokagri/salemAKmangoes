@@ -76,7 +76,6 @@ function App() {
       <Route path="/admin/order/:orderId" element={<ProtectedRoute element={<UpdateOrder/>} adminOnly={true}/>}/>
       <Route path="/admin/reviews" element={<ProtectedRoute element={<ReviewsList/>} adminOnly={true}/>}/>
     </Routes>
-    {isAuthenticated && <UserDashboard user={user}/>}
    </Router>
   )
 }

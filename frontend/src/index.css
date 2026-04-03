@@ -1,68 +1,97 @@
 @import "tailwindcss";
 
-* {
-  font-family: "Poppins", sans-serif !important;
-}
 :root {
-  --font-poppins: "Poppins", sans-serif;
-  --color-shop-light-pink: #fcf0e4;
-  --color-shop-dark-green: #063c28;
-  --color-shop-btn-dark-green: #063d29;
-  --color-shop-light-bg: #f6f6f6;
-  --color-shop-light-green: #3b9c3c;
-  --color-shop-orange: #fb6c08;
-  --color-dark-color: #151515;
-  --color-light-color: #52525b;
-  --color-light-orange: #fca99b;
-  --color-mango-yellow: #ffcc33;
-  --color-mango-green: #99cc33;
-  --color-dark-blue: #6c7fd8;
-  --color-shop-orange: #fb6c08;
-  --color-shop-lighter-bg: #f1f3f8;
-  --color-shop-light-text: #686e7d;
+  /* Brand Colors - Refined HSL */
+  --mango-yellow: #ffcc33;
+  --mango-green: #99cc33;
+  --mango-green-soft: #f0f7e6;
+  --dark-green: #1a3c34;
+  --dark-green-rgb: 26, 60, 52;
+  
+  /* Neutral Palette */
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #1e293b;
+  --text-soft: #64748b;
+  --text-muted: #94a3b8;
+  --border-main: #e2e8f0;
+  --border-soft: #f1f5f9;
+
+  /* Shadow System */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-main: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
- 
-}
-body{
-   background-color: rgba(225, 217, 217, 0.633);
+  font-family: 'Poppins', sans-serif !important;
 }
 
-button:focus,
-a:focus,
-input:focus,
-textarea:focus {
-  outline: none !important;
-  box-shadow: none !important;
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scrollbar width */
+/* Custom Scrollbar - Premium Mango Theme */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
-/* Scrollbar track (background) */
 ::-webkit-scrollbar-track {
-  background: #5A3E1B;
-  border-radius: 10px;
+  background: var(--dark-green);
 }
 
-/* Scrollbar thumb (the moving part) */
 ::-webkit-scrollbar-thumb {
-  background: #ffcc33;
+  background: var(--mango-yellow);
+  border: 2px solid var(--dark-green);
   border-radius: 10px;
 }
 
-/* Hover effect */
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffcc33;
+  background: #f5b800; /* Darker yellow on hover */
 }
 
-html {
-  scrollbar-width: thin;
-  scrollbar-color: #ffcc33 #5A3E1B;
+/* Selection */
+::selection {
+  background-color: var(--mango-green);
+  color: white;
 }
+
+/* Global Transitions */
+a, button, input {
+  transition: var(--transition-fast);
+}
+
+/* Base Styles */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--dark-green);
+  font-weight: 700;
+}
+
+button:focus, a:focus, input:focus {
+  outline: 2px solid var(--mango-green);
+  outline-offset: 2px;
+}
+
+.container-custom {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .container-custom {
+    padding: 0 1rem;
+  }
+}

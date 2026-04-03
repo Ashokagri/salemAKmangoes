@@ -58,12 +58,9 @@ export const getAllProducts = handleAsyncError(async (req, res, next) => {
   apiFeatures.pagination(resultsPerPage);
   const products = await apiFeatures.query;
 
-  if (!products || products.length === 0) {
-    return next(new HandleError("No Product Found", 404));
-  }
   res.status(200).json({
     success: true,
-    products,
+    products: products || [],
     productCount,
     resultsPerPage,
     totalPages,

@@ -11,7 +11,7 @@ function Pagination({
     lastPageText='>>'
 }) {
     const {totalPages,products}=useSelector((state)=>state.product);
-    if(products.length===0 || totalPages<=1) return null;
+    if(!products || products.length===0 || totalPages<=1) return null;
 
     //Generate Page numbers
     const getPageNumbers=()=>{

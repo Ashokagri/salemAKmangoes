@@ -1,74 +1,70 @@
 import React from "react";
-import {
-  YouTube,
-  Instagram,
-} from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import { Mail, Phone, MapPin, Instagram, Youtube, Facebook, ShieldCheck, HeartPulse } from "lucide-react";
 import "../componentStyles/Footer.css";
 import Logo from "./Logo";
 import FooterTop from "./FooterTop";
-import { Container } from "@mui/material";
 
 function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <>
-      <footer className="footer">
+    <footer className="footer">
+      <div className="container-custom">
         <FooterTop />
-        <br />
-        <hr />
+        
         <div className="footer-container">
-          {/* Section1 */}
-
-          <div className="footer-section contact">
-            <Container>
-              <h3>
-                <Logo />
-              </h3>
-            </Container>
-            <p className="content">
-              Known for its organic and exceptionally sweet mangoes, the shop
-              continues its long-standing dedication to premium, naturally grown
-              fruits, making it a must-visit destination.
+          {/* Brand Section */}
+          <div className="footer-section">
+            <Logo />
+            <p className="footer-description">
+              Known for our organic and exceptionally sweet mangoes. 
+              We've dedicated decades to providing premium, naturally grown 
+              fruits directly from our orchards to your home.
             </p>
+            <div className="flex gap-4 mt-2">
+              <a href="#" className="social-link-item hover:text-[#99cc33] transition-colors"><Instagram size={20} /></a>
+              <a href="#" className="social-link-item hover:text-[#99cc33] transition-colors"><Youtube size={20} /></a>
+              <a href="#" className="social-link-item hover:text-[#99cc33] transition-colors"><Facebook size={20} /></a>
+            </div>
           </div>
 
-          <div className="footer-section social">
-            <h3>Location</h3>
-            <div>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1486.037446217606!2d78.05677994158606!3d11.789459777099113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babf90003334837%3A0x65e1d47a357c5b1f!2sSalem%20Ak%20Mango!5e1!3m2!1sen!2sin!4v1763639447612!5m2!1sen!2sin"
-                width="200"
-                height="200"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
-          </div>
-          {/* Section2 */}
-          <div className="footer-section social">
-            <h3>Policy Details</h3>
+          {/* Quick Links Section */}
+          <div className="footer-section">
+            <h3>Quick Links</h3>
             <div className="social-links">
-              <a href="/contact-us" >
-                <p className="social-icon font-semibold ">Terms & Conditions</p>
-              </a>
-              <a href="/contact-us">
-                <p className="social-icon font-semibold">Privacy Policy</p>
-              </a>
-               <a href="/contact-us">
-                <p className="social-icon font-semibold">Refund Policy</p>
-              </a>
-               <a href="/contact-us">
-                <p className="social-icon font-semibold">Shipping Policy</p>
-              </a>
+              <Link to="/products" className="social-link-item">Our Products</Link>
+              <Link to="/about-us" className="social-link-item">About Our Journey</Link>
+              <Link to="/contact-us" className="social-link-item">Contact Us</Link>
+            </div>
+          </div>
+
+          {/* Policy Section */}
+          <div className="footer-section">
+            <h3>Policies</h3>
+            <div className="social-links">
+              <Link to="/contact-us" className="social-link-item"><ShieldCheck size={16} /> Terms & Conditions</Link>
+              <Link to="/contact-us" className="social-link-item"><ShieldCheck size={16} /> Privacy Policy</Link>
+              <Link to="/contact-us" className="social-link-item"><HeartPulse size={16} /> Refund Policy</Link>
+              <Link to="/contact-us" className="social-link-item"><MapPin size={16} /> Shipping Policy</Link>
             </div>
           </div>
         </div>
-        <div className="footer-bottom">
-          <p>&copy; 2025 salemAKmangoes . All rights reserved</p>
+
+        {/* Location Map Section (Desktop Grid Context or Full Width) */}
+        <div className="footer-container py-4">
+           {/* If you want map on the side in desktop, include it in the grid above */}
         </div>
-      </footer>
-    </>
+
+        <div className="footer-bottom">
+          <p>&copy; {currentYear} salemAKmangoes. All rights reserved.</p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+             <span className="text-xs text-gray-500 uppercase tracking-widest">Premium Quality</span>
+             <span className="text-xs text-gray-500 uppercase tracking-widest">100% Organic</span>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }
 

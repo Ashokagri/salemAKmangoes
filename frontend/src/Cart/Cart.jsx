@@ -5,27 +5,19 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CartItem from "./CartItem";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Nocart from "../components/Nocart";
 import { refreshCartPrices } from "../features/cart/cartSlice";
+import { ShoppingCart, ArrowRight, CreditCard } from "lucide-react";
 
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
-const totalQty = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
-// Shipping charges per kg/item
-const shippingPerKg = totalQty > 7 ? 25 : 35;
+  // Subtotal
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity, 0
+  );
 
-// Calculate total shipping = per kg * total quantity
-const shippingCharges = shippingPerKg * totalQty;
-
-// Subtotal
-const subtotal = cartItems.reduce(
-  (acc, item) => acc + item.price * item.quantity, 0
-);
-
-// Total amount
-const total = subtotal + shippingCharges;
   const navigate = useNavigate();
   const checkoutHandler = () => {
     navigate(`/login?redirect=/shipping`);
@@ -34,65 +26,86 @@ const total = subtotal + shippingCharges;
 
   useEffect(() => {
     dispatch(refreshCartPrices());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
       <Navbar />
-      <PageTitle title="salemAKmangoes" />
-      {cartItems.length === 0 ? (
-        <>
-          <br />
-          <br />
-          <Nocart />
-        </>
-      ) : (
-        <>
-          <br />
-          <br />
-          <div className="cart-page">
-            <div className="cart-items">
-              <div className="cart-items-heading">Your Cart</div>
-              <div className="cart-table">
-                <div className="cart-table-header">
-                  <div className="header-product">Product</div>
-                  <div className="header-quantity">Quantity</div>
-                  <div className="header-total item-total-heading">
-                    Item Total
-                  </div>
-                  <div className="header-action">Actions</div>
+      <br></br>
+      <br />
+      <div className="pt-24 lg:pt-32 pb-12">
+        <PageTitle title="Your Shopping Cart - Salem AK Mangoes" />
+
+        {cartItems.length === 0 ? (
+          <div className="container-custom">
+            <Nocart />
+          </div>
+        ) : (
+          <div className="container-custom">
+            <div className="cart-page">
+              <div className="cart-items">
+                <div className="cart-items-heading">
+                  <ShoppingCart size={24} />
+                  Your Shopping Cart
+                  <span className="text-sm font-normal text-gray-400 ml-auto">
+                    ({cartItems.length} {cartItems.length === 1 ? "item" : "items"})
+                  </span>
                 </div>
 
-                {/* Cart Items */}
-                {cartItems &&
-                  cartItems.map((item) => (
-                    <CartItem item={item} key={item.name} />
-                  ))}
-              </div>
-            </div>
+                <div className="cart-table">
+                  <div className="cart-table-header">
+                    <div>Product</div>
+                    <div>Quantity</div>
+                    <div>Total</div>
+                    <div className="text-right">Action</div>
+                  </div>
 
-            {/* Price Summary */}
-            <div className="price-summary">
-              <h3 className="price-summary-heading">Price Summary</h3>
-              <div className="summary-item">
-                <p className="summary-label">Subtotal (₹):</p>
-                <p className="summary-value">{subtotal}/-</p>
+                  {/* Cart Items */}
+                  <div className="flex flex-col">
+                    {cartItems.map((item) => (
+                      <CartItem item={item} key={item.product} />
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="summary-item">
-                <p className="summary-label">Shipping (₹):</p>
-                <p className="summary-value">{shippingCharges}/-</p>
-              </div>
-              <div className="summary-total">
-                <p className="total-label">Total (₹):</p>
-                <p className="total-value">{total}/-</p>
-              </div>
-              <button className="checkout-btn" onClick={checkoutHandler}>
-                Proceed to Checkout
-              </button>
+
+              {/* Price Summary */}
+              <aside className="price-summary">
+                <h3 className="price-summary-heading flex items-center gap-2">
+                  <CreditCard size={20} /> Order Summary
+                </h3>
+
+                <div className="summary-row">
+                  <span className="summary-label">Subtotal</span>
+                  <span className="summary-value">₹{subtotal.toLocaleString()}</span>
+                </div>
+
+                <div className="summary-row">
+                  <span className="summary-label">Shipping</span>
+                  <span className="summary-value text-xs text-gray-500 uppercase">Calculated next</span>
+                </div>
+
+                <div className="summary-total-row">
+                  <span className="total-label">Total Amount</span>
+                  <span className="total-value">₹{subtotal.toLocaleString()}</span>
+                </div>
+
+                <button
+                  className="checkout-btn group"
+                  onClick={checkoutHandler}
+                  disabled={cartItems.length === 0}
+                >
+                  Checkout Now <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
+                </button>
+                <br />
+                <p className="text-center text-xs text-gray-400 mt-4 px-4">
+                  Secure checkout powered by Razorpay. All our mangoes are naturally grown.
+                </p>
+              </aside>
             </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
       <Footer />
     </>
   );

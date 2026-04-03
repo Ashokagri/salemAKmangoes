@@ -9,10 +9,16 @@ function ProtectedRoute({element,adminOnly=false}) {
     }
 
     if(!isAuthenticated){
-        return <Navigate to="/login"/>
+        return <Navigate to="/login" replace />
     }
-    if(adminOnly && user.role!=='admin'){
-        return <Navigate to="/"/>
+
+    // Wait for user data to be ready before checking roles
+    if (!user) {
+        return <Loader />
+    }
+
+    if(adminOnly && user?.role !== 'admin'){
+        return <Navigate to="/" replace />
     }
   return element
 }

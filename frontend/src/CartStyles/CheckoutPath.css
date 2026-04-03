@@ -1,54 +1,110 @@
 .checkoutPath {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 6rem;
-    border-bottom: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  margin: 3rem auto 1rem;
+  padding: 0 1.5rem;
+  position: relative;
+}
+
+.checkoutPath-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-soft);
+  position: relative;
+  flex: 1;
+  z-index: 1;
+}
+
+/* Base Step Circle */
+.checkoutPath-icon-container {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: white;
+  border: 2px solid var(--border-main);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-main);
+  color: var(--text-muted);
+  box-shadow: var(--shadow-sm);
+}
+
+.checkoutPath-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all var(--transition-main);
+}
+
+/* Active State */
+.checkoutPath-step[data-active="true"] .checkoutPath-icon-container {
+  border-color: var(--mango-green);
+  color: var(--dark-green);
+  background: var(--mango-green-soft);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 6px rgba(153, 204, 51, 0.15);
+}
+
+.checkoutPath-step[data-active="true"] .checkoutPath-label {
+  color: var(--dark-green);
+}
+
+/* Completed State */
+.checkoutPath-step[data-completed="true"] .checkoutPath-icon-container {
+  background: var(--dark-green);
+  border-color: var(--dark-green);
+  color: white;
+}
+
+.checkoutPath-step[data-completed="true"] .checkoutPath-label {
+  color: var(--text-main);
+}
+
+/* Connector Lines */
+.checkoutPath-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 1.75rem; /* Center of the icon */
+  left: calc(50% + 2rem);
+  width: calc(100% - 4rem);
+  height: 2px;
+  background: var(--border-main);
+  z-index: -1;
+  transition: all var(--transition-main);
+}
+
+.checkoutPath-step[data-completed="true"]:not(:last-child)::after {
+  background: var(--dark-green);
+}
+
+@media (max-width: 640px) {
+  .checkoutPath {
+    margin: 2rem auto 0.5rem;
   }
   
-  .checkoutPath-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    color: #9ca3af;
-    position: relative;
-    flex: 1;
+  .checkoutPath-icon-container {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  
+  .checkoutPath-icon-container svg {
+    width: 18px;
+    height: 18px;
   }
 
-  .checkoutPath-step[completed="true"] {
-    color: #10b981;
-  }
-  
-  .checkoutPath-icon {
-    background: #f3f4f6;
-    padding: 0.75rem;
-    border-radius: 50%;
-  }
-  
-  .checkoutPath-step[active="true"] .checkoutPath-icon {
-    background: #dbeafe;
-  }
-  
-  .checkoutPath-step[completed="true"] .checkoutPath-icon {
-    background: #d1fae5;
-  }
-  
   .checkoutPath-label {
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 0.7rem;
   }
-  
+
   .checkoutPath-step:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 1.5rem;
-    left: 60%;
-    width: 100%;
-    height: 2px;
-    background: #e5e7eb;
+    top: 1.375rem;
+    left: calc(50% + 1.5rem);
+    width: calc(100% - 3rem);
   }
-  
-  .checkoutPath-step[completed="true"]::after {
-    background: #10b981;
-  }
+}
