@@ -74,9 +74,10 @@ function Products() {
                 ))}
               </div>
             </div>
-            <br />
-            <br />
-
+          </Container>
+          <br />
+          <br />
+          <Container>
             <div className="products-view-container">
               {products && products.length > 0 ? (
                 <div className="home-container pb-12">
