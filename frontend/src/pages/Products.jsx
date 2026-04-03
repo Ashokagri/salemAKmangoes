@@ -74,6 +74,8 @@ function Products() {
                 ))}
               </div>
             </div>
+            <br />
+            <br />
 
             <div className="products-view-container">
               {products && products.length > 0 ? (
@@ -83,11 +85,11 @@ function Products() {
                       <Product product={product} key={product._id || index} />
                     ))}
                   </div>
-                  
+
                   <div className="mt-12 flex justify-center">
-                    <Pagination 
-                      currentPage={pageFromURL} 
-                      onPageChange={handlePageChange} 
+                    <Pagination
+                      currentPage={pageFromURL}
+                      onPageChange={handlePageChange}
                     />
                   </div>
                 </div>
