@@ -1,103 +1,42 @@
 
-
 .filter-section {
-  flex: 0 0 250px;
-  padding-left: 20px;
-
-  align-items: flex-start;
-  margin-top: 100px;
-margin-bottom: -50px;
-padding-bottom: -30px;
- 
-}
-
-.filter-heading {
-  color: var(--primary-dark);
-  margin-bottom: 10px;
-}
-
-.filter-section ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.filter-section li {
-  margin: 10px 0;
-  padding: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  text-transform: uppercase;
-  transition: background-color 0.3s;
-  border-radius: 4px;
-  color: var(--border-color);
-}
-
-.filter-section li:hover {
-  background-color: #efefef;
-}
-
-
-
-.products-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.products-product-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
-}
-
-
-.no-products-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  color: var(--text-primary);
-}
-
-
-@media (max-width: 768px) {
-  .products-layout {
-    flex-direction: column;
-  }
-
-  .filter-section {
-    width: 100%;
-  }
+  margin-bottom: 3.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .btn-category {
-  padding: 8px 20px;         /* px-5 py-2 */
-  border: none;
-  border-radius: 9999px;      /* rounded-full */
+  padding: 10px 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.2s ease;  /* transition-all duration-200 */
-  font-size: 14px;            /* text-sm */
-  font-weight: 600;           /* font-semibold */
-  background: #99cc33;        /* default bg */
-                  /* text-gray-700 */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  font-weight: 700;
+  background: white;
+  color: #1a3c34;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .btn-category:hover {
-  background: #063c28;
-  color: white;
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(153, 204, 51, 0.2);
+  border-color: #99cc33;
 }
 
-/* Active state */
-.btn-category:active {
+/* Active state for selected category */
+.btn-category.active {
   background: #99cc33;
-  color: #000;
+  color: #1a3c34;
+  border-color: #99cc33;
+  box-shadow: 0 4px 12px rgba(153, 204, 51, 0.3);
 }
 
-.home-product-container{
-  display: grid;
-grid-template-columns: repeat(4, 1fr);
+.products-view-container {
+  width: 100%;
 }
 

@@ -62,7 +62,8 @@ function Products() {
       ) : (
         <main className="pt-24 lg:pt-28 min-h-screen">
           <Container>
-            <div className="filter-section my-8">
+            {/* Category Filter Section */}
+            <div className="filter-section">
               <div className="flex items-center justify-center gap-4 flex-wrap">
                 {categories.map((cat) => (
                   <button
@@ -74,12 +75,8 @@ function Products() {
                 ))}
               </div>
             </div>
-            <br />
-          </Container>
-          <br />
-          <br />
 
-          <Container>
+            {/* Products Viewing Section */}
             <div className="products-view-container">
               {products && products.length > 0 ? (
                 <div className="home-container pb-12">
