@@ -40,7 +40,7 @@ function App() {
     if(isAuthenticated){
       dispatch(loadUser())
     }
-  },[dispatch])
+  },[dispatch, isAuthenticated])
   
   return (
    <Router>
@@ -75,6 +75,7 @@ function App() {
       <Route path="/admin/orders" element={<ProtectedRoute element={<OrdersList/>} adminOnly={true}/>}/>
       <Route path="/admin/order/:orderId" element={<ProtectedRoute element={<UpdateOrder/>} adminOnly={true}/>}/>
       <Route path="/admin/reviews" element={<ProtectedRoute element={<ReviewsList/>} adminOnly={true}/>}/>
+      <Route path="*" element={<Home />} />
     </Routes>
    </Router>
   )

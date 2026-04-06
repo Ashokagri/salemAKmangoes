@@ -24,8 +24,9 @@ function OrderConfirm() {
 
   const proceedToPayment = () => {
     const data = {
-      subtotal,
-      shippingCharges,
+      subTotal: subtotal,
+      shippingPrice: shippingCharges,
+      taxPrice: 0,
       total,
     };
     sessionStorage.setItem("orderItem", JSON.stringify(data));
@@ -64,7 +65,7 @@ function OrderConfirm() {
                   </div>
                   <div className="info-item">
                     <span className="info-label">Phone Number</span>
-                    <span className="info-value">{shippingInfo.phoneNumber}</span>
+                    <span className="info-value">{shippingInfo.phoneNo}</span>
                   </div>
                   <div className="info-item" style={{ gridColumn: "1 / -1" }}>
                     <span className="info-label">Delivery Address</span>

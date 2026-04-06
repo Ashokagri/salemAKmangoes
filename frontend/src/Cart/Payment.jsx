@@ -63,6 +63,8 @@ function Payment() {
   return (
     <>
       <Navbar />
+      <br />
+      <br />
       <PageTitle title="Secure Checkout - Salem AK Mangoes" />
 
       <CheckoutPath activePath={2} />
@@ -100,7 +102,7 @@ function Payment() {
           <button className="pay-now-btn" onClick={() => completePayment(orderItem?.total)}>
             <CreditCard size={20} /> Proceed to Secure Payment <ArrowRight size={18} />
           </button>
-          
+
           <Link to="/order/confirm" className="payment-back-link">
             <ArrowLeft size={16} /> Change Order Details
           </Link>

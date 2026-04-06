@@ -3,7 +3,7 @@ import "../AdminStyles/UpdateOrder.css";
 import "../AdminStyles/Dashboard.css";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import Footer from "../components/Footer";
+import AdminFooter from "./AdminFooter";
 import AdminSidebar from "./AdminSidebar";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,8 +28,8 @@ import {
 function UpdateOrder() {
   const [status, setStatus] = useState("");
   const { orderId } = useParams();
-  const { order, loading: orderLoading } = useSelector((state) => state.order);
-  const { success, loading: adminLoading, error } = useSelector((state) => state.admin);
+  const { order, loading: orderLoading, error: orderError } = useSelector((state) => state.order);
+  const { success, loading: adminLoading, error: adminError } = useSelector((state) => state.admin);
   const loading = orderLoading || adminLoading;
   const dispatch = useDispatch();
 
@@ -43,13 +43,13 @@ function UpdateOrder() {
     shippingInfo = {},
     orderItems = [],
     paymentInfo = {},
-    orderStatus,
-    totalPrice,
-    createdAt,
+    orderStatus = "",
+    totalPrice = 0,
+    createdAt = null,
     user: customer = {}
-  } = order;
+  } = order || {};
 
-  const paymentStatus = paymentInfo.status === "succeeded" ? "Paid" : "Not Paid";
+  const paymentStatus = paymentInfo?.status === "succeeded" ? "Paid" : "Not Paid";
   const finalOrderStatus = paymentStatus === "Not Paid" ? "Cancelled" : orderStatus;
 
   const handleStatusUpdate = () => {
@@ -61,16 +61,19 @@ function UpdateOrder() {
   };
 
   useEffect(() => {
-    if (error) {
-      toast.error(error, { position: "bottom-left", autoClose: 2000 });
+    if (adminError) {
+      toast.error(adminError, { position: "bottom-left", autoClose: 2000 });
       dispatch(removeErrors());
+    }
+    if (orderError) {
+      toast.error(orderError, { position: "bottom-left", autoClose: 2000 });
     }
     if (success) {
       toast.success("Order Status updated successfully", { position: "bottom-left", autoClose: 2000 });
       dispatch(removeSuccess());
       dispatch(getOrderDetails(orderId));
     }
-  }, [dispatch, error, success, orderId]);
+  }, [dispatch, adminError, orderError, success, orderId]);
 
   return (
     <>
@@ -160,12 +163,12 @@ function UpdateOrder() {
                               QTY: {item.quantity} kg
                             </span>
                             <span className="flex items-center gap-1 font-bold text-gray-800">
-                              <IndianRupee size={12} /> {item.price.toLocaleString()} / kg
+                              <IndianRupee size={12} /> {item.price?.toLocaleString()} / kg
                             </span>
                           </span>
                         </div>
                         <div className="font-black text-gray-700">
-                          ₹{(item.price * item.quantity).toLocaleString()}
+                          ₹{((item.price || 0) * (item.quantity || 0)).toLocaleString()}
                         </div>
                       </div>
                     ))}
@@ -224,7 +227,7 @@ function UpdateOrder() {
           )}
         </main>
       </div>
-      <Footer />
+      <AdminFooter />
     </>
   );
 }

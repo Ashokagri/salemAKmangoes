@@ -3,7 +3,7 @@ import "../AdminStyles/Dashboard.css";
 import "../AdminStyles/AdminTable.css";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import Footer from "../components/Footer";
+import AdminFooter from "./AdminFooter";
 import AdminSidebar from "./AdminSidebar";
 import Loader from "../components/Loader";
 import { Link, useNavigate } from "react-router-dom";
@@ -138,7 +138,7 @@ function UsersList() {
           )}
         </main>
       </div>
-      <Footer />
+      <AdminFooter />
     </>
   );
 }

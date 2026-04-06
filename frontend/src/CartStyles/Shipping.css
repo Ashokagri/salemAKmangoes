@@ -165,3 +165,17 @@
   color: var(--dark-green);
   box-shadow: var(--shadow-md);
 }
+
+.courier-info-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border-width: 1px;
+  border-style: solid;
+  animation: slide-up 0.3s ease-out;
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

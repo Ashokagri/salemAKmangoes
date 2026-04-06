@@ -3,7 +3,7 @@ import "../AdminStyles/Dashboard.css";
 import "../AdminStyles/AdminTable.css";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import Footer from "../components/Footer";
+import AdminFooter from "./AdminFooter";
 import AdminSidebar from "./AdminSidebar";
 import { Link } from "react-router-dom";
 import { Edit3, Trash2, Plus, AlertCircle, CheckCircle2, Star, Loader2 } from "lucide-react";
@@ -148,7 +148,7 @@ function ProductsList() {
           )}
         </main>
       </div>
-      <Footer />
+      <AdminFooter />
     </>
   );
 }

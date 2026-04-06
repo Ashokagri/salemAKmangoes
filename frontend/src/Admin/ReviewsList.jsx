@@ -3,13 +3,14 @@ import "../AdminStyles/Dashboard.css";
 import "../AdminStyles/AdminTable.css";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import Footer from "../components/Footer";
+import AdminFooter from "./AdminFooter";
 import AdminSidebar from "./AdminSidebar";
-import { Trash2, Eye, Star, X, AlertCircle } from "lucide-react";
+import { Trash2, Edit3, Eye, Star, X, AlertCircle, Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearMessage,
   deleteReview,
+  deleteProduct,
   fetchAdminProducts,
   fetchProductReviews,
   removeErrors,
@@ -17,7 +18,7 @@ import {
 } from "../features/admin/adminSlice";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function ReviewsList() {
   const { products, loading, error, reviews, success, message } = useSelector(
@@ -49,6 +50,20 @@ function ReviewsList() {
     if (confirmDelete) {
       dispatch(deleteReview({ productId, reviewId })).then(() => {
         dispatch(fetchProductReviews(productId));
+      });
+    }
+  };
+
+  // Handle delete product
+  const handleDeleteProduct = (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+    if (confirmDelete) {
+      dispatch(deleteProduct(id)).then((action) => {
+        if (action.type === "admin/deleteProduct/fulfilled") {
+           toast.success("Product Deleted Successfully", { position: "bottom-left", autoClose: 2000 });
+           dispatch(removeSuccess());
+           dispatch(fetchAdminProducts());
+        }
       });
     }
   };
@@ -132,15 +147,27 @@ function ReviewsList() {
                         </td>
                         <td>
                           <div className="flex justify-end">
+                            <Link to={`/admin/product/${product?._id}`} className="admin-action-btn btn-edit" title="Edit Product">
+                              <Edit3 size={18} />
+                            </Link>
+
                             {(product?.numOfReviews || 0) > 0 && (
                               <button
-                                className="admin-action-btn btn-edit"
+                                className="admin-action-btn bg-blue-50 text-blue-600 hover:bg-blue-100 !w-10 !h-10 !rounded-full"
                                 onClick={() => handleViewReviews(product?._id)}
                                 title="View Reviews"
                               >
                                 <Eye size={18} />
                               </button>
                             )}
+
+                            <button
+                               className="admin-action-btn btn-delete"
+                               onClick={() => handleDeleteProduct(product?._id)}
+                               title="Delete Product"
+                            >
+                               <Trash2 size={18} />
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -228,7 +255,7 @@ function ReviewsList() {
         </div>
       )}
 
-      <Footer />
+      <AdminFooter />
     </>
   );
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../AdminStyles/CreateProduct.css";
 import "../AdminStyles/Dashboard.css";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import AdminFooter from "./AdminFooter";
 import PageTitle from "../components/PageTitle";
 import AdminSidebar from "./AdminSidebar";
 import { useDispatch, useSelector } from "react-redux";
@@ -205,7 +205,7 @@ function CreateProduct() {
           </div>
         </main>
       </div>
-      <Footer />
+      <AdminFooter />
     </>
   );
 }

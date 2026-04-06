@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../AdminStyles/Dashboard.css";
 import "../AdminStyles/AdminTable.css";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import Footer from "../components/Footer";
+import AdminFooter from "./AdminFooter";
 import AdminSidebar from "./AdminSidebar";
 import Loader from "../components/Loader";
-import { Link } from "react-router-dom";
-import { Edit3, Trash2, ShoppingBag, Calendar, User, IndianRupee, AlertCircle } from "lucide-react";
+import { Trash2, ShoppingBag, Calendar, User, IndianRupee, AlertCircle, Phone } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessage, deleteOrder, fetchAllOrders, removeErrors, removeSuccess } from "../features/admin/adminSlice";
+import { clearMessage, deleteOrder, fetchAllOrders, removeErrors, removeSuccess, updateOrderStatus } from "../features/admin/adminSlice";
 import { toast } from "react-toastify";
 
 function OrdersList() {
@@ -27,13 +26,17 @@ function OrdersList() {
     }
   };
 
+  const handleStatusUpdate = (orderId, status) => {
+    dispatch(updateOrderStatus({ orderId, status }));
+  };
+
   useEffect(() => {
     if (error) {
       toast.error(error, { position: "bottom-left", autoClose: 2000 });
       dispatch(removeErrors());
     }
     if (success) {
-      toast.success(message, { position: "bottom-left", autoClose: 2000 });
+      if (message) toast.success(message, { position: "bottom-left", autoClose: 2000 });
       dispatch(removeSuccess());
       dispatch(clearMessage());
       dispatch(fetchAllOrders());
@@ -61,7 +64,7 @@ function OrdersList() {
             </div>
           </header>
 
-          {loading ? (
+          {loading && !orders.length ? (
             <Loader />
           ) : (
             <div className="admin-list-wrapper">
@@ -74,11 +77,11 @@ function OrdersList() {
                 <table className="admin-list-table">
                   <thead>
                     <tr>
-                      <th>Order ID</th>
+                      <th>Order Info</th>
                       <th>Customer Info</th>
-                      <th>Items / Status</th>
-                      <th>Order Total</th>
-                      <th className="text-right">Actions</th>
+                      <th>Update Status</th>
+                      <th>Total</th>
+                      <th className="text-right px-6">Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -86,47 +89,50 @@ function OrdersList() {
                       <tr key={order._id}>
                         <td>
                           <div className="flex flex-col">
-                            <span className="font-mono text-xs text-gray-400 mb-1">#{order._id}</span>
-                            <span className="flex items-center gap-1 text-xs text-gray-500">
-                              <Calendar size={12} /> {new Date(order.createdAt).toLocaleDateString()}
+                            <span className="font-mono text-[10px] text-gray-400 mb-1 tracking-tighter">#{order._id}</span>
+                            <span className="flex items-center gap-1 text-xs text-gray-700 font-bold">
+                              <Calendar size={12} className="text-[#99cc33]" /> {new Date(order.createdAt).toLocaleDateString()}
                             </span>
                           </div>
                         </td>
                         <td>
-                          <div className="flex items-center gap-2">
-                            <User size={16} className="text-gray-300" />
-                            <span className="admin-item-name">{order.user?.name || "Guest Customer"}</span>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="flex flex-col gap-2">
-                            <span className="text-xs font-bold text-gray-500">
-                              {order.orderItems?.length || 0} items
-                            </span>
-                            <span className={`status-badge ${order.orderStatus === "Delivered" ? "status-success" :
-                                order.orderStatus === "Processing" ? "status-error" :
-                                  "bg-blue-100 text-blue-700"
-                              }`}>
-                              {order.orderStatus}
+                          <div className="flex flex-col gap-0.5">
+                            <div className="flex items-center gap-2">
+                                <span className="font-black text-[#1a3c34] text-sm uppercase">{order.user?.name || "Guest Customer"}</span>
+                            </div>
+                            <span className="text-[11px] font-bold text-gray-400 flex items-center gap-1">
+                                <Phone size={10} /> +91 {order.shippingInfo?.phoneNo || "No Contact"}
                             </span>
                           </div>
                         </td>
                         <td>
-                          <span className="text-lg font-black text-gray-800">
-                            ₹{order.totalPrice.toLocaleString()}
+                          <select 
+                            className={`admin-status-dropdown ${
+                                order.orderStatus === "Delivered" ? "status-success" : 
+                                order.orderStatus === "Shipped" ? "status-shipped" : "status-processing"
+                            }`}
+                            value={order.orderStatus}
+                            onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
+                          >
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                          </select>
+                        </td>
+                        <td>
+                          <span className="text-sm font-black text-gray-800 flex items-center gap-0.5">
+                            <IndianRupee size={12} /> {order.totalPrice.toLocaleString()}
                           </span>
                         </td>
                         <td>
-                          <div className="flex justify-end">
-                            <Link to={`/admin/order/${order._id}`} className="admin-action-btn btn-edit" title="Manage Order">
-                              <Edit3 size={18} />
-                            </Link>
+                          <div className="flex justify-end px-4">
                             <button
-                              className="admin-action-btn btn-delete"
+                              className="admin-action-btn btn-delete !rounded-full !w-9 !h-9"
                               onClick={() => handleDelete(order._id)}
                               title="Delete Order"
+                              disabled={order.orderStatus !== "Delivered"}
                             >
-                              <Trash2 size={18} />
+                              <Trash2 size={16} />
                             </button>
                           </div>
                         </td>
@@ -139,7 +145,7 @@ function OrdersList() {
           )}
         </main>
       </div>
-      <Footer />
+      <AdminFooter />
     </>
   );
 }

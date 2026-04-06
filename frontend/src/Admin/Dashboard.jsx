@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import Footer from "../components/Footer";
+import AdminFooter from "./AdminFooter";
 import AdminSidebar from "./AdminSidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAdminProducts, fetchAllOrders } from "../features/admin/adminSlice";
@@ -109,7 +109,7 @@ function Dashboard() {
           </div>
         </main>
       </div>
-      <Footer />
+      <AdminFooter />
     </>
   );
 }

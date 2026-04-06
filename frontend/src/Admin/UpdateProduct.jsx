@@ -3,7 +3,7 @@ import "../AdminStyles/CreateProduct.css";
 import "../AdminStyles/Dashboard.css";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import Footer from "../components/Footer";
+import AdminFooter from "./AdminFooter";
 import AdminSidebar from "./AdminSidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -226,7 +226,7 @@ function UpdateProduct() {
           </div>
         </main>
       </div>
-      <Footer />
+      <AdminFooter />
     </>
   );
 }

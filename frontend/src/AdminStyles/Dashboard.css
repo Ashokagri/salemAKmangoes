@@ -104,9 +104,9 @@
 /* Stats Grid */
 .admin-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3.5rem;
 }
 
 .admin-stat-card {
@@ -164,18 +164,119 @@
   line-height: 1.2;
 }
 
+@media (min-width: 1025px) {
+  .admin-sidebar {
+    display: flex !important;
+    position: sticky !important;
+    transform: none !important;
+    box-shadow: none !important;
+    width: 280px;
+    top: 70px;
+    height: calc(100vh - 70px);
+  }
+
+  .admin-sidebar-toggle, .admin-sidebar-overlay, .mobile-close-btn {
+    display: none !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .admin-sidebar {
-    display: none; /* In a real app, I'd implement a mobile toggle, but keeping it simple for now or using the Navbar user menu */
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1100;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.2);
+    border-right: none;
+    display: flex;
+  }
+
+  .admin-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-header {
+    justify-content: space-between;
+    padding-top: 2rem;
+  }
+
+  .mobile-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Floating Toggle Button */
+  .admin-sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    background: var(--dark-green);
+    color: white;
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 25px rgba(26, 60, 52, 0.4);
+    z-index: 1000;
+    border: 2px solid var(--mango-green);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .admin-sidebar-toggle:active {
+    transform: scale(0.9);
+  }
+
+  .admin-sidebar-toggle.active {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Overlay */
+  .admin-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1099;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .admin-sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
   }
 }
 
 @media (max-width: 768px) {
   .admin-main-content {
     padding: 1.5rem;
+    padding-bottom: 6rem; /* Space for FAB */
   }
   
   .admin-page-title {
     font-size: 1.5rem;
+  }
+
+  .admin-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 }

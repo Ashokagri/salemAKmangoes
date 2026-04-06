@@ -18,7 +18,7 @@ function Shipping() {
 
   const [address, setAddress] = useState(shippingInfo.address || "");
   const [pinCode, setPinCode] = useState(shippingInfo.pinCode || "");
-  const [phoneNumber, setPhoneNumber] = useState(shippingInfo.phoneNumber || "");
+  const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo || "");
   const [country] = useState("IN");
   const [state, setState] = useState(shippingInfo.state || "");
   const [city, setCity] = useState(shippingInfo.city || "");
@@ -57,7 +57,7 @@ function Shipping() {
 
   const shippingInfoSubmit = (e) => {
     e.preventDefault();
-    if (phoneNumber.length !== 10) {
+    if (phoneNo.length !== 10) {
       toast.error('Invalid Phone number! It should be 10 digits', { position: 'bottom-left', autoClose: 2000 });
       return;
     }
@@ -68,7 +68,7 @@ function Shipping() {
     dispatch(saveShippingInfo({
       address,
       pinCode,
-      phoneNumber,
+      phoneNo,
       country,
       state,
       city,
@@ -118,13 +118,13 @@ function Shipping() {
                 </div>
 
                 <div className="shipping-form-group">
-                  <label htmlFor="phoneNumber"><Phone size={18} /> Phone Number</label>
+                  <label htmlFor="phoneNo"><Phone size={18} /> Phone Number</label>
                   <input
                     type="tel"
-                    id="phoneNumber"
+                    id="phoneNo"
                     placeholder="10-digit number"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    value={phoneNo}
+                    onChange={(e) => setPhoneNo(e.target.value)}
                     required
                   />
                 </div>
@@ -193,6 +193,24 @@ function Shipping() {
                     </button>
                   ))}
                 </div>
+
+                {shippingPartner === "ST Courier" && (
+                  <div className="courier-info-box border-blue-200 bg-blue-50 text-blue-800">
+                    <p className="flex items-center gap-2 text-xs font-bold">
+                      <Truck size={14} /> 
+                      This courier service delivers the order at your home.
+                    </p>
+                  </div>
+                )}
+
+                {shippingPartner === "MSS Courier" && (
+                  <div className="courier-info-box border-amber-200 bg-amber-50 text-amber-800">
+                    <p className="flex items-center gap-2 text-xs font-bold">
+                      <Building size={14} /> 
+                      This courier service customer needs to claim their courier at their branch near you.
+                    </p>
+                  </div>
+                )}
               </div>
 
               {shippingCharges > 0 && (
@@ -204,7 +222,10 @@ function Shipping() {
               )}
 
               <button className="shipping-submit-btn group" type="submit">
-                Review Order <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
+                {shippingPartner === "ST Courier" ? "ST Courier (Home Delivery)" : 
+                 shippingPartner === "MSS Courier" ? "MSS Courier (Office Delivery)" : 
+                 "Review Order"}
+                <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
               </button>
             </form>
           </div>
