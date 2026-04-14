@@ -123,8 +123,13 @@ function UpdateOrder() {
                     </div>
                     <div className="detail-item span-full">
                       <span className="detail-label"><MapPin size={12} className="inline mr-1" /> Delivery Address</span>
-                      <span className="detail-value">
-                        {shippingInfo.address}, {shippingInfo.city}, {shippingInfo.state}, {shippingInfo.country} - {shippingInfo.pinCode}
+                      <span className="detail-value leading-relaxed">
+                        {shippingInfo.address}
+                        <div className="flex gap-2 mt-1">
+                            <span className="bg-[#99cc33]/10 text-[#1a3c34] px-2 py-0.5 rounded text-[11px] font-black uppercase">{shippingInfo.city}</span>
+                            <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[11px] font-black uppercase">{shippingInfo.state}</span>
+                            <span className="bg-gray-800 text-white px-2 py-0.5 rounded text-[11px] font-mono">{shippingInfo.pinCode}</span>
+                        </div>
                       </span>
                     </div>
                   </div>
