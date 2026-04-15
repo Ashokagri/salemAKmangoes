@@ -37,3 +37,8 @@ app.get("*", (_, res) => {
 app.use(errorHandleMiddleware);
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 export default app;
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true
+}));
