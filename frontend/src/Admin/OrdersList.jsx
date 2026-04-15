@@ -88,11 +88,27 @@ function OrdersList() {
                     {orders.map((order) => (
                       <tr key={order._id}>
                         <td>
-                          <div className="flex flex-col">
-                            <span className="font-mono text-[10px] text-gray-400 mb-1 tracking-tighter">#{order._id}</span>
-                            <span className="flex items-center gap-1 text-xs text-gray-700 font-bold">
-                              <Calendar size={12} className="text-[#99cc33]" /> {new Date(order.createdAt).toLocaleDateString()}
-                            </span>
+                          <div className="flex flex-col gap-2">
+                            <div>
+                                <span className="font-mono text-[10px] text-gray-400 mb-1 tracking-tighter">#{order._id}</span>
+                                <span className="flex items-center gap-1 text-xs text-gray-700 font-bold">
+                                <Calendar size={12} className="text-[#99cc33]" /> {new Date(order.createdAt).toLocaleDateString()}
+                                </span>
+                            </div>
+                            
+                            <div className="pt-2 border-t border-gray-100">
+                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 block">Ordered Items</span>
+                                {order.orderItems?.map((item, index) => (
+                                    <div key={index} className="flex flex-col mb-1.5 last:mb-0">
+                                        <span className="text-[11px] font-bold text-[#1a3c34] leading-tight">
+                                            {item.name}
+                                        </span>
+                                        <span className="text-[10px] font-black text-[#99cc33] uppercase">
+                                            {item.quantity} kg
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
                           </div>
                         </td>
                         <td>

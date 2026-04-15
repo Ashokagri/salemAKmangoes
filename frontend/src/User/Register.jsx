@@ -38,6 +38,7 @@ function Register() {
 
   const registerSubmit = (e) => {
     e.preventDefault();
+    // Profile picture is OPTIONAL - only name, email, password are required
     if (!name || !email || !password) {
       toast.error('Please fill out all the required fields', { position: 'bottom-left', autoClose: 2000 });
       return;
@@ -46,7 +47,12 @@ function Register() {
     myForm.set('name', name);
     myForm.set('email', email);
     myForm.set('password', password);
-    myForm.set('avatar', avatar);
+    
+    // Only add avatar if user has selected one (avatar is optional)
+    if (avatar && avatar.trim() !== "") {
+        myForm.set('avatar', avatar);
+    }
+    
     dispatch(register(myForm));
   };
 
@@ -119,7 +125,7 @@ function Register() {
           </div>
 
           <div className="input-field-group">
-            <label>Profile Picture</label>
+            <label>Profile Picture (Optional)</label>
             <div className="avatar-selection-wrapper">
               <img src={avatarPreview} alt="Avatar Preview" className="avatar-preview-img" />
               <div className="input-wrapper">

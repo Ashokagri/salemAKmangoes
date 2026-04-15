@@ -36,7 +36,10 @@ function UpdateProfile() {
     const myForm = new FormData();
     myForm.set("name", name)
     myForm.set("email", email)
-    myForm.set("avatar", avatar)
+    // Only add avatar if user has selected a new one (avatar update is optional)
+    if (avatar && avatar.trim() !== "") {
+      myForm.set("avatar", avatar)
+    }
     dispatch(updateProfile(myForm))
   }
   useEffect(() => {

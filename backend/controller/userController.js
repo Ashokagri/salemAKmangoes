@@ -7,24 +7,51 @@ import { sendEmail } from '../utils/sendEmail.js';
 import {v2 as cloudinary} from 'cloudinary';
 
 export const registerUser=handleAsyncError(async(req , res , next)=>{
-    const {name,email,password,avatar}=req.body;
-    const myCloud= await cloudinary.uploader.upload(avatar,{
-        folder:'avatars',
-        width:150,
-        crop:'scale'
-    })
-    const user=await User.create({
-        name,
-        email,
-        password,
-        avatar:{
-            public_id:myCloud.public_id,
-            url:myCloud.secure_url
+    try {
+        const {name,email,password,avatar}=req.body;
+        console.log("Registering user:", { name, email, hasAvatar: !!avatar });
 
+        // Profile picture is optional - use default if not provided
+        let avatarData = {
+            public_id: "default_avatar_id",
+            url: "/images/profile.png"
+        };
+
+        // Only upload to Cloudinary if avatar is provided as base64 string
+        if (avatar && typeof avatar === "string" && avatar.startsWith("data:image")) {
+            console.log("Attempting Cloudinary upload for avatar...");
+            try {
+                const myCloud = await cloudinary.uploader.upload(avatar,{
+                    folder:'avatars',
+                    width:150,
+                    crop:'scale'
+                });
+                avatarData = {
+                    public_id: myCloud.public_id,
+                    url: myCloud.secure_url
+                };
+                console.log("Avatar uploaded successfully");
+            } catch (uploadError) {
+                console.error("Cloudinary upload error:", uploadError);
+                // If upload fails, proceed with default avatar instead of failing registration
+                console.log("Using default avatar due to upload error");
+            }
+        } else {
+            console.log("No avatar provided or invalid format. Using default avatar.");
         }
-    })
-    sendToken(user,201,res)
-})
+
+        const user=await User.create({
+            name,
+            email,
+            password,
+            avatar: avatarData
+        });
+        sendToken(user,201,res);
+    } catch (err) {
+        console.error("Signup Error Details:", err);
+        return next(new HandleError(err.message || "Registration failed", 500));
+    }
+});
 
 // Login
 export const loginUser=handleAsyncError(async(req , res, next)=>{
@@ -147,21 +174,35 @@ export const updateProfile=handleAsyncError(async(req,res,next)=>{
         name,
         email
     }
-    if(avatar!==""){
-        const user=await User.findById(req.user.id);
-        const imageId=user.avatar.public_id
-        await cloudinary.uploader.destroy(imageId)
-        const myCloud=await cloudinary.uploader.upload(avatar,{
-            folder:'avatars',
-        width:150,
-        crop:'scale'
-        })
+    
+    // Avatar update is OPTIONAL - only process if new avatar is provided
+    if(avatar && typeof avatar === "string" && avatar.startsWith("data:image")){
+        try {
+            const user=await User.findById(req.user.id);
+            const imageId=user.avatar.public_id
+            
+            // Don't try to destroy the default placeholder in Cloudinary
+            if (imageId && imageId !== "default_avatar_id") {
+                await cloudinary.uploader.destroy(imageId)
+            }
+            
+            const myCloud=await cloudinary.uploader.upload(avatar,{
+                folder:'avatars',
+                width:150,
+                crop:'scale'
+            })
 
-        updateUserDetails.avatar={
-            public_id:myCloud.public_id,
-            url:myCloud.secure_url,
+            updateUserDetails.avatar={
+                public_id:myCloud.public_id,
+                url:myCloud.secure_url,
+            }
+        } catch (uploadError) {
+            console.error("Avatar upload error during profile update:", uploadError);
+            // If avatar upload fails, continue with other profile updates instead of failing completely
+            console.log("Proceeding with profile update without avatar change");
         }
     }
+    
     const user=await User.findByIdAndUpdate(req.user.id,updateUserDetails,{
         new:true,
         runValidators:true
@@ -224,8 +265,18 @@ export const deleteUser=handleAsyncError(async(req,res,next)=>{
    if(!user){
     return next(new HandleError("User doesn't exist",400))
    }
-   const imageId=user.avatar.public_id;
-   await cloudinary.uploader.destroy(imageId)
+   
+   // Only delete avatar from Cloudinary if it's not the default placeholder
+   const imageId=user.avatar?.public_id;
+   if (imageId && imageId !== "default_avatar_id") {
+       try {
+           await cloudinary.uploader.destroy(imageId)
+       } catch (error) {
+           console.error("Error deleting avatar from Cloudinary:", error);
+           // Continue with user deletion even if avatar deletion fails
+       }
+   }
+   
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json({
         success:true,
