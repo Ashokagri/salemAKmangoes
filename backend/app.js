@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import product from "./routes/productRoutes.js";
 import user from "./routes/userRoutes.js";
 import order from "./routes/orderRoutes.js";
@@ -16,6 +17,10 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Middleware
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(fileUpload());
@@ -37,8 +42,3 @@ app.get("*", (_, res) => {
 app.use(errorHandleMiddleware);
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 export default app;
-
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
