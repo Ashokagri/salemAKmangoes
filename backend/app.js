@@ -17,23 +17,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Middleware
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'https://salem-a-kmangoes.vercel.app',
-  'https://salem-a-kmangoes-jylj58yn8-ashokagris-projects.vercel.app'
-];
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(fileUpload());
@@ -45,12 +36,14 @@ app.use("/api/v1", user);
 app.use("/api/v1", order);
 app.use("/api/v1", payment);
 
-//server static files
-
+// server static files
+// Disabled for separate deployment (Frontend on Vercel, Backend on Render)
+/*
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.get("*", (_, res) => {
   res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
 });
+*/
 
 app.use(errorHandleMiddleware);
 dotenv.config({ path: path.resolve(__dirname, ".env") });
