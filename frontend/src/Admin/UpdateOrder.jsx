@@ -116,6 +116,12 @@ function UpdateOrder() {
                       <span className="detail-value font-mono">{shippingInfo.phoneNo}</span>
                     </div>
                     <div className="detail-item">
+                      <span className="detail-label">Courier Partner</span>
+                      <span className="detail-value uppercase font-black text-[#99cc33] text-xs px-2 py-0.5 bg-[#99cc33]/10 rounded flex items-center gap-1 w-fit">
+                        <Truck size={12} /> {shippingInfo.shippingPartner || "Not Specified"}
+                      </span>
+                    </div>
+                    <div className="detail-item">
                       <span className="detail-label">Date of Order</span>
                       <span className="detail-value flex items-center gap-2">
                         <Calendar size={14} /> {createdAt ? new Date(createdAt).toLocaleDateString() : 'N/A'}

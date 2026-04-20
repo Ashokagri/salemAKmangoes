@@ -6,7 +6,7 @@ import PageTitle from "../components/PageTitle";
 import AdminFooter from "./AdminFooter";
 import AdminSidebar from "./AdminSidebar";
 import Loader from "../components/Loader";
-import { Trash2, ShoppingBag, Calendar, User, IndianRupee, AlertCircle, Phone, MapPin } from "lucide-react";
+import { Trash2, ShoppingBag, Calendar, User, IndianRupee, AlertCircle, Phone, MapPin, Truck } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessage, deleteOrder, fetchAllOrders, removeErrors, removeSuccess, updateOrderStatus } from "../features/admin/adminSlice";
 import { toast } from "react-toastify";
@@ -119,6 +119,9 @@ function OrdersList() {
                             <span className="text-[11px] font-bold text-gray-400 flex items-center gap-1">
                                 <Phone size={10} /> +91 {order.shippingInfo?.phoneNo || "No Contact"}
                             </span>
+                            <div className="flex items-center gap-1 mt-1 font-black text-[10px] text-[#99cc33] uppercase">
+                                <Truck size={10} /> {order.shippingInfo?.shippingPartner || "Self Pick"}
+                            </div>
                             <div className="mt-1.5 pt-1.5 border-t border-gray-100">
                                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 block">Shipping Address</span>
                                 <div className="text-[11px] font-bold text-gray-600 flex items-start gap-1 leading-normal">
